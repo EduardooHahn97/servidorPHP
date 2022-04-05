@@ -1,0 +1,55 @@
+<?php
+
+echo 'ola esp aqui é o servidor';
+if(isset($_GET['texto'])) {
+    echo $_GET['texto'];
+}
+
+/*if(isset($_POST['value1'])) {
+    echo $_POST['value1'];
+}
+
+if(isset($_POST['value2'])) {
+    echo $_POST['value2'];
+}*/
+//$username = "root";
+//$password = null;
+
+//try {
+
+//} catch(PDOException $e) {
+//    echo 'ERROR: ' . $e->getMessage();
+//}
+
+function inserir($texto){
+	$username = "root";
+	$password = null;
+	$conn = new PDO('mysql:host=localhost;dbname=aplicativo', $username, $password);
+	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$data = date("Y-m-d");
+	$query = "INSERT INTO log(texto, idDispositivo, verificado, data_inclusao) VALUES ('".$texto."', 1, 0, '".$data."')";
+	
+	$smtp = $conn->prepare($query);
+	$smtp->execute();
+	print_r("Inserido");
+}
+
+function selecionar($condicao){
+	$username = "root";
+	$password = null;
+	$conn = new PDO('mysql:host=localhost;dbname=aplicativo', $username, $password);
+	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$data = $conn->query('SELECT * FROM log WHERE ' . $conn->quote($condicao));
+
+	foreach($data as $row) {
+		print_r($row);
+	}
+}
+
+inserir($_GET['texto']);
+
+//string sql = "INSERT INTO log(texto, idDispositivo, verificado, data_inclusao) VALUES ('teste texto', 1, 1, '2022-02-25')";
+
+
+
+?>
